@@ -384,12 +384,21 @@ body {
 
 /* 任务完成弹窗样式 */
 .task-completion-modal {
-    position: absolute;
+    position: absolute; /* 相对于device-frame定位 */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: none; /* 默认隐藏 */
+}
+
+.task-completion-modal.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal-backdrop {
@@ -405,16 +414,38 @@ body {
 
 .modal-container {
     position: absolute;
-    bottom: 0;
+    bottom: 0; /* 直接从底部开始，不预留空间 */
     left: 0;
     right: 0;
     background-color: var(--bg-primary);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    max-height: 85vh; /* 调整最大高度为视口高度的85% */
-    overflow-y: auto;
-    animation: slide-up 0.3s ease;
-    padding-bottom: calc(var(--safe-area-inset-bottom) + 16px); /* 增加底部安全区域的padding */
+    max-height: 95%; /* 增加最大高度比例 */
+    height: auto;
+    overflow-y: auto; /* 启用滚动条 */
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    padding-bottom: 500px;
+    margin-bottom: 0;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+}
+
+/* 优化滚动条样式 */
+.modal-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+    background-color: var(--text-tertiary);
+    border-radius: 2px;
+}
+
+.task-completion-modal.active .modal-container {
+    transform: translateY(0);
 }
 
 .modal-header {
@@ -424,32 +455,66 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
+    padding: 10px 16px;
     border-bottom: 1px solid var(--border-color);
     z-index: 1;
 }
 
+.modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+}
+
+.close-button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.placeholder-button {
+    width: 24px;
+    height: 24px;
+    visibility: hidden;
+}
+
 .modal-content {
-    padding: 20px;
+    padding: 10px 16px;
 }
 
 .upload-section {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
+}
+
+.section-subtitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
 }
 
 .image-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 4px;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 5px;
+    margin-bottom: 5px;
 }
 
 .image-upload-cell {
     aspect-ratio: 1/1;
     background-color: var(--bg-secondary);
-    border-radius: 12px;
+    border-radius: 6px;
     overflow: hidden;
 }
 
@@ -460,21 +525,30 @@ body {
     align-items: center;
     justify-content: center;
     color: var(--text-secondary);
-    border: 2px dashed var(--text-tertiary);
-    border-radius: 12px;
+    border: 1px dashed var(--text-tertiary);
+    border-radius: 6px;
+}
+
+.upload-placeholder i {
+    font-size: 20px;
 }
 
 .thought-input {
     width: 100%;
-    min-height: 120px; /* 增加输入框的最小高度 */
-    border-radius: 12px;
+    min-height: 50px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
-    padding: 12px;
-    font-size: 16px;
+    padding: 8px;
+    font-size: 14px;
     font-family: inherit;
     resize: none;
     background-color: var(--bg-secondary);
-    margin-bottom: 16px;
+    margin-bottom: 6px;
+    box-sizing: border-box;
+}
+
+.thought-input-container {
+    margin-bottom: 6px;
 }
 
 .submit-button {
@@ -482,11 +556,17 @@ body {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 16px 0;
-    font-size: 16px;
+    border-radius: 10px;
+    padding: 10px 0;
+    font-size: 15px;
     font-weight: 600;
-    margin-top: 8px;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.submit-button:active {
+    transform: scale(0.98);
+    background-color: #4E4CD6;
 }
 
 @keyframes slide-up {
@@ -496,20 +576,6 @@ body {
     to {
         transform: translateY(0);
     }
-}
-
-/* 优化滚动条样式 */
-.modal-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.modal-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.modal-container::-webkit-scrollbar-thumb {
-    background-color: var(--text-tertiary);
-    border-radius: 3px;
 }
 
 /* 广场页样式 */
@@ -557,24 +623,43 @@ body {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-radius: var(--border-radius);
+}
+
+/* 优化滚动条样式 */
+.tab-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+    background-color: var(--text-tertiary);
+    border-radius: 2px;
 }
 
 /* 推荐事项提交表单样式 */
 .suggestion-form {
     background-color: var(--bg-primary);
-    border-radius: var(--border-radius);
     padding: 16px;
     box-shadow: var(--shadow-default);
+    margin: 0 calc(-1 * var(--safe-area-inset-horizontal));
 }
 
 .form-header {
-    margin-bottom: 12px;
+    margin: 0 var(--safe-area-inset-horizontal) 16px;
 }
 
 .form-header h3 {
     font-size: 18px;
     font-weight: 600;
     color: var(--text-primary);
+    margin-bottom: 4px;
 }
 
 .form-header p {
@@ -583,36 +668,65 @@ body {
 }
 
 .form-input-group {
-    display: flex;
-    gap: 8px;
+    margin: 0 var(--safe-area-inset-horizontal);
+}
+
+.input-field {
+    position: relative;
+    width: 100%;
 }
 
 .form-input {
-    flex: 1;
-    height: 44px;
-    border-radius: 8px;
+    width: 100%;
+    border-radius: 12px;
     border: 1px solid var(--border-color);
-    padding: 0 12px;
-    font-size: 16px;
+    padding: 12px;
+    font-size: 15px;
     background-color: var(--bg-secondary);
+    transition: all 0.3s ease;
+}
+
+.title-input {
+    height: 44px;
+    padding-right: 50px; /* 为字数统计留出空间 */
+}
+
+.desc-input {
+    min-height: 80px;
+    resize: vertical;
+    line-height: 1.5;
 }
 
 .form-input:focus {
     outline: none;
     border-color: var(--primary-color);
+    background-color: var(--bg-primary);
+}
+
+.char-count {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--text-tertiary);
 }
 
 .submit-suggestion {
-    width: 44px;
+    width: 100%;
     height: 44px;
-    border-radius: 8px;
+    border-radius: 12px;
     border: none;
     background-color: var(--primary-color);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 .submit-suggestion:hover {
@@ -620,16 +734,17 @@ body {
 }
 
 .submit-suggestion:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
+}
+
+.submit-suggestion i {
+    font-size: 18px;
 }
 
 /* 时间周期切换栏样式 */
 .time-filter {
-    display: flex;
-    background-color: var(--bg-primary);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-default);
+    margin: 0 calc(-1 * var(--safe-area-inset-horizontal));
+    border-radius: 0;
 }
 
 .filter-option {
@@ -657,18 +772,19 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding-bottom: 8px;
+    padding: 0;
+    margin: 0 calc(-1 * var(--safe-area-inset-horizontal));
 }
 
 /* 排行榜卡片样式 */
 .ranking-card {
     background-color: var(--bg-primary);
-    border-radius: var(--border-radius);
     padding: 16px;
     display: flex;
     gap: 12px;
     box-shadow: var(--shadow-default);
-    position: relative;
+    margin: 0 var(--safe-area-inset-horizontal);
+    border-radius: var(--border-radius);
 }
 
 .ranking-number {
@@ -687,41 +803,46 @@ body {
 
 .ranking-content {
     flex: 1;
+    min-width: 0;
 }
 
 .ranking-title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ranking-description {
     font-size: 14px;
+    line-height: 1.4;
     color: var(--text-secondary);
     margin-bottom: 12px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .ranking-meta {
     display: flex;
     gap: 16px;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-secondary);
 }
 
 .vote-count, .completion-count {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .vote-button-container {
     display: flex;
     align-items: center;
+    margin-left: 8px;
 }
 
 .vote-button {
@@ -753,7 +874,8 @@ body {
 
 /* 添加备选库按钮样式 */
 .add-to-library-container {
-    padding: 8px 0;
+    padding: 8px var(--safe-area-inset-horizontal);
+    margin: 0 calc(-1 * var(--safe-area-inset-horizontal));
 }
 
 .add-to-library-button {
@@ -1330,12 +1452,13 @@ body {
 /* 功能列表样式 */
 .profile-sections {
     padding: 20px var(--safe-area-inset-horizontal);
+    /* margin: 0 calc(-1 * var(--safe-area-inset-horizontal)); */
 }
 
 .section-card {
     background-color: var(--bg-primary);
     border-radius: var(--border-radius);
-    margin-bottom: 16px;
+    margin: 0 calc(-1 * var(--safe-area-inset-horizontal)) 16px;
     overflow: hidden;
 }
 
@@ -1494,18 +1617,41 @@ body {
 }
 
 .modal-header {
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-primary);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
+    padding: 10px 16px;
     border-bottom: 1px solid var(--border-color);
+    z-index: 1;
 }
 
-.modal-header h3 {
-    font-size: 18px;
+.modal-title {
+    font-size: 16px;
     font-weight: 600;
     flex: 1;
     text-align: center;
+}
+
+.close-button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.placeholder-button {
+    width: 24px;
+    height: 24px;
+    visibility: hidden;
 }
 
 .modal-body {
@@ -1688,4 +1834,119 @@ input[type="time"] {
     color: var(--text-secondary);
     font-size: 14px;
     line-height: 1.5;
+}
+
+.placeholder-button {
+    width: 24px;
+    height: 24px;
+    visibility: hidden;
+}
+
+/* 图标基础样式 */
+.iconfont {
+    font-size: 22px;
+    margin-bottom: 2px;
+    color: var(--text-secondary);
+}
+
+/* 调整特定图标大小 */
+.icon-size-small {
+    font-size: 18px;
+}
+
+.icon-size-large {
+    font-size: 24px;
+}
+
+/* 图标颜色 */
+.icon-primary {
+    color: var(--text-primary);
+}
+
+.icon-secondary {
+    color: var(--text-secondary);
+}
+
+/* 底部导航栏图标 */
+.tab-bar .tab-item .iconfont {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.tab-bar .tab-item.active .iconfont {
+    color: var(--primary-color);
+}
+
+/* 任务卡片图标 */
+.task-card .refresh-button .iconfont {
+    font-size: 18px;
+}
+
+.complete-button .iconfont {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+/* 模态框图标 */
+.modal-header .close-button .iconfont {
+    font-size: 20px;
+}
+
+.upload-placeholder .iconfont {
+    font-size: 24px;
+    color: var(--text-tertiary);
+}
+
+/* 投票按钮图标 */
+.vote-button .iconfont {
+    font-size: 20px;
+}
+
+.vote-button.voted .iconfont {
+    color: var(--primary-color);
+}
+
+/* 排行榜图标 */
+.ranking-meta .iconfont {
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+/* 添加到备选库按钮图标 */
+.add-to-library-button .iconfont {
+    font-size: 20px;
+    margin-right: 6px;
+    color: var(--primary-color);
+}
+
+/* 社交操作按钮图标 */
+.feed-actions .action-button .iconfont {
+    font-size: 20px;
+}
+
+.feed-actions .action-button.active .iconfont {
+    color: var(--primary-color);
+}
+
+/* 分享选项图标 */
+.share-options .share-option .iconfont {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+/* 编辑头像按钮图标 */
+.edit-avatar-button .iconfont {
+    font-size: 20px;
+    color: #ffffff;
+}
+
+/* 任务历史项图标 */
+.task-history-item .task-icon .iconfont {
+    font-size: 18px;
+    color: var(--success-color);
+}
+
+.task-history-item .iconfont.icon-arrow-right {
+    font-size: 16px;
+    color: var(--text-tertiary);
 } 

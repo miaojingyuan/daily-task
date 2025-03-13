@@ -24,6 +24,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 设置我的页面交互
     setupProfilePageInteractions();
+
+    // 任务标题字数统计
+    const titleInput = document.querySelector('.title-input');
+    const charCount = document.querySelector('.char-count');
+    
+    if (titleInput && charCount) {
+        titleInput.addEventListener('input', function() {
+            const length = this.value.length;
+            charCount.textContent = `${length}/20`;
+            
+            // 当接近字数限制时改变颜色提示
+            if (length >= 20) {
+                charCount.style.color = '#FF3B30';
+            } else if (length >= 15) {
+                charCount.style.color = '#FF9500';
+            } else {
+                charCount.style.color = 'var(--text-tertiary)';
+            }
+        });
+    }
 });
 
 // 更新状态栏时间
@@ -71,7 +91,38 @@ function setupRecommendPageInteractions() {
         button.addEventListener('click', function() {
             const modal = this.closest('.device-frame').querySelector('.task-completion-modal');
             if (modal) {
+                // 确保弹窗在设备框架内显示
                 modal.style.display = 'block';
+                
+                // 使用requestAnimationFrame确保DOM更新后再添加active类
+                requestAnimationFrame(() => {
+                    modal.classList.add('active');
+                    
+                    // 重置之前可能设置的样式
+                    const modalContainer = modal.querySelector('.modal-container');
+                    modalContainer.style.height = '';
+                    modalContainer.style.overflowY = 'auto';
+                    
+                    // 检查弹窗是否超出设备框架
+                    const deviceFrame = this.closest('.device-frame');
+                    const deviceHeight = deviceFrame.offsetHeight;
+                    
+                    // 计算可用高度 - 考虑设备总高度
+                    const availableHeight = deviceHeight * 0.95; // 使用设备高度的95%
+                    
+                    // 设置最大高度
+                    modalContainer.style.maxHeight = availableHeight + 'px';
+                    
+                    // 确保弹窗内容可见
+                    setTimeout(() => {
+                        // 检查内容是否完全可见
+                        const modalContent = modalContainer.querySelector('.modal-content');
+                        if (modalContent && modalContainer.scrollHeight > modalContainer.clientHeight) {
+                            // 如果内容需要滚动，确保弹窗足够高
+                            modalContainer.scrollTop = 0; // 滚动到顶部
+                        }
+                    }, 100);
+                });
             }
         });
     });
@@ -82,7 +133,11 @@ function setupRecommendPageInteractions() {
         button.addEventListener('click', function() {
             const modal = this.closest('.task-completion-modal');
             if (modal) {
-                modal.style.display = 'none';
+                modal.classList.remove('active');
+                // 等待过渡动画完成后再隐藏元素
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
             }
         });
     });
@@ -93,7 +148,11 @@ function setupRecommendPageInteractions() {
         backdrop.addEventListener('click', function() {
             const modal = this.closest('.task-completion-modal');
             if (modal) {
-                modal.style.display = 'none';
+                modal.classList.remove('active');
+                // 等待过渡动画完成后再隐藏元素
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
             }
         });
     });
