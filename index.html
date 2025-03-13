@@ -432,8 +432,8 @@
                                             今天在公园散步时发现了这些美丽的花朵，阳光透过花瓣的感觉真的很治愈，分享给大家～
                                         </p>
                                         
-                                        <!-- 图片画廊 -->
-                                        <div class="feed-gallery">
+                                        <!-- 九宫格图片画廊 -->
+                                        <div class="feed-gallery multiple-images">
                                             <div class="gallery-image">
                                                 <img src="https://images.unsplash.com/photo-1457089328109-e5d9bd499191?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
                                             </div>
@@ -442,6 +442,24 @@
                                             </div>
                                             <div class="gallery-image">
                                                 <img src="https://images.unsplash.com/photo-1474112704314-8162b7749a90?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1494972308805-463bc619d34e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1496661415325-ef852f9e8e7c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1471899236350-e3016bf1e69e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image more-indicator">
+                                                <img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
                                             </div>
                                         </div>
                                         
@@ -494,7 +512,7 @@
                                             今天尝试了泰国菜，酸辣的口味真的很特别！Tom Yum汤的味道太赞了，强烈推荐大家也去尝试一下～
                                         </p>
                                         
-                                        <!-- 图片画廊 -->
+                                        <!-- 单张图片画廊 -->
                                         <div class="feed-gallery single-image">
                                             <div class="gallery-image">
                                                 <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="泰国菜照片">
@@ -572,7 +590,136 @@
             </div>
         </section>
         
-        <!-- 后续部分将在确认后添加 -->
+        <!-- 第五部分：我的页面 -->
+        <section class="prototype-section">
+            <h2 class="section-title">我的页面</h2>
+            
+            <div class="ios-device">
+                <div class="device-frame">
+                    <!-- 状态栏 -->
+                    <div class="status-bar">
+                        <div class="status-bar-time">9:41</div>
+                        <div class="status-bar-icons">
+                            <span class="signal-icon"></span>
+                            <span class="wifi-icon"></span>
+                            <span class="battery-icon">100%</span>
+                        </div>
+                    </div>
+
+                    <!-- 主内容区 - 我的页面 -->
+                    <div class="app-content profile-page">
+                        <!-- 用户信息区域 -->
+                        <div class="user-profile-header">
+                            <div class="user-info-section">
+                                <div class="user-avatar-large">
+                                    <img src="https://placekitten.com/200/200" alt="用户头像">
+                                    <button class="edit-avatar-button">
+                                        <i class="sf-symbol">camera.fill</i>
+                                    </button>
+                                </div>
+                                <div class="user-details">
+                                    <h2 class="user-name">小明</h2>
+                                    <p class="user-bio">每天进步一点点 🌱</p>
+                                </div>
+                            </div>
+                            
+                            <!-- 任务统计卡片 -->
+                            <div class="stats-card">
+                                <div class="stat-item">
+                                    <span class="stat-value">28</span>
+                                    <span class="stat-label">已完成</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">12</span>
+                                    <span class="stat-label">连续天数</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">5</span>
+                                    <span class="stat-label">收藏任务</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 功能列表 -->
+                        <div class="profile-sections">
+                            <!-- 任务历史卡片 -->
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <h3>历史任务</h3>
+                                    <button class="view-all-button">查看全部</button>
+                                </div>
+                                
+                                <!-- 时间线任务列表 -->
+                                <div class="task-timeline">
+                                    <!-- 今天 -->
+                                    <div class="timeline-group">
+                                        <div class="timeline-date">今天</div>
+                                        <div class="timeline-items">
+                                            <div class="task-history-item" data-task-id="1">
+                                                <div class="task-icon completed">
+                                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                                </div>
+                                                <div class="task-info">
+                                                    <h4>拍摄一张花朵照片</h4>
+                                                    <p>完成于 14:30</p>
+                                                </div>
+                                                <i class="sf-symbol chevron">chevron.right</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 昨天 -->
+                                    <div class="timeline-group">
+                                        <div class="timeline-date">昨天</div>
+                                        <div class="timeline-items">
+                                            <div class="task-history-item" data-task-id="2">
+                                                <div class="task-icon completed">
+                                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                                </div>
+                                                <div class="task-info">
+                                                    <h4>尝试一种新的食物</h4>
+                                                    <p>完成于 19:45</p>
+                                                </div>
+                                                <i class="sf-symbol chevron">chevron.right</i>
+                                            </div>
+                                            <div class="task-history-item" data-task-id="3">
+                                                <div class="task-icon completed">
+                                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                                </div>
+                                                <div class="task-info">
+                                                    <h4>进行5分钟冥想</h4>
+                                                    <p>完成于 09:15</p>
+                                                </div>
+                                                <i class="sf-symbol chevron">chevron.right</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部导航栏 -->
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <i class="sf-symbol">star</i>
+                            <span>推荐</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="sf-symbol">globe</i>
+                            <span>广场</span>
+                        </div>
+                        <div class="tab-item active">
+                            <i class="sf-symbol">person.fill</i>
+                            <span>我的</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部安全区域 -->
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </section>
     </div>
     
     <script src="script.js"></script>

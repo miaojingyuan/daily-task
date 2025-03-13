@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 添加触摸反馈效果
     addTouchFeedback();
+    
+    // 发现Tab交互功能
+    setupDiscoverTabInteractions();
+    
+    // 设置我的页面交互
+    setupProfilePageInteractions();
 });
 
 // 更新状态栏时间
@@ -457,5 +463,517 @@ function addTouchFeedback() {
         element.addEventListener('mouseleave', function() {
             this.classList.remove('touch-active');
         });
+    });
+}
+
+// 发现Tab交互功能
+function setupDiscoverTabInteractions() {
+    const filterOptions = document.querySelectorAll('.filter-option');
+    const feedCards = document.querySelectorAll('.feed-card');
+    const likeButtons = document.querySelectorAll('.action-button[data-action="like"]');
+    const commentButtons = document.querySelectorAll('.action-button[data-action="comment"]');
+    const shareButtons = document.querySelectorAll('.action-button[data-action="share"]');
+    const commentInputs = document.querySelectorAll('.comment-textbox');
+
+    // 过滤选项切换
+    filterOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            filterOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            
+            // 模拟内容过滤
+            simulateContentFilter(option.dataset.filter);
+        });
+    });
+
+    // 点赞功能
+    likeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('liked');
+            const likeCount = button.querySelector('.count');
+            const currentCount = parseInt(likeCount.textContent);
+            likeCount.textContent = button.classList.contains('liked') ? 
+                currentCount + 1 : currentCount - 1;
+            
+            // 添加触感反馈
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(50);
+            }
+        });
+    });
+
+    // 评论功能
+    commentButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            const commentInput = commentInputs[index];
+            commentInput.focus();
+        });
+    });
+
+    // 评论输入处理
+    commentInputs.forEach(input => {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const comment = input.value.trim();
+                if (comment) {
+                    addNewComment(input.closest('.feed-card'), comment);
+                    input.value = '';
+                }
+            }
+        });
+    });
+
+    // 分享功能
+    shareButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            showShareSheet();
+        });
+    });
+}
+
+// 模拟内容过滤
+function simulateContentFilter(filter) {
+    const waterfall = document.querySelector('.waterfall-container');
+    
+    // 添加加载动画
+    waterfall.style.opacity = '0.6';
+    
+    setTimeout(() => {
+        // 模拟数据加载完成
+        waterfall.style.opacity = '1';
+        
+        // 这里可以根据filter类型来排序或筛选内容
+        console.log(`Content filtered by: ${filter}`);
+    }, 500);
+}
+
+// 添加新评论
+function addNewComment(feedCard, commentText) {
+    const commentsSection = feedCard.querySelector('.comments-section');
+    const newComment = document.createElement('div');
+    newComment.className = 'comment';
+    newComment.innerHTML = `
+        <div class="comment-content">
+            <span class="comment-user">我</span>
+            <span class="comment-text">${commentText}</span>
+        </div>
+    `;
+    commentsSection.appendChild(newComment);
+}
+
+// 显示分享面板
+function showShareSheet() {
+    const shareSheet = document.createElement('div');
+    shareSheet.className = 'share-sheet';
+    shareSheet.innerHTML = `
+        <div class="share-options">
+            <button class="share-option">
+                <i class="icon-wechat"></i>
+                <span>微信</span>
+            </button>
+            <button class="share-option">
+                <i class="icon-moments"></i>
+                <span>朋友圈</span>
+            </button>
+            <button class="share-option">
+                <i class="icon-copy"></i>
+                <span>复制链接</span>
+            </button>
+        </div>
+        <button class="cancel-share">取消</button>
+    `;
+    
+    document.body.appendChild(shareSheet);
+    
+    // 添加动画效果
+    requestAnimationFrame(() => {
+        shareSheet.classList.add('active');
+    });
+    
+    // 点击取消按钮关闭分享面板
+    shareSheet.querySelector('.cancel-share').addEventListener('click', () => {
+        shareSheet.classList.remove('active');
+        setTimeout(() => {
+            shareSheet.remove();
+        }, 300);
+    });
+}
+
+// 设置我的页面交互
+function setupProfilePageInteractions() {
+    // 头像编辑按钮点击事件
+    const editAvatarButton = document.querySelector('.edit-avatar-button');
+    if (editAvatarButton) {
+        editAvatarButton.addEventListener('click', () => {
+            showImagePickerSheet();
+        });
+    }
+
+    // 查看全部按钮点击事件
+    const viewAllButton = document.querySelector('.view-all-button');
+    if (viewAllButton) {
+        viewAllButton.addEventListener('click', () => {
+            showTaskHistoryModal();
+        });
+    }
+
+    // 任务历史项点击事件
+    const taskHistoryItems = document.querySelectorAll('.task-history-item');
+    taskHistoryItems.forEach(item => {
+        item.addEventListener('click', () => {
+            showTaskDetailModal(item.querySelector('.task-info h4').textContent);
+        });
+    });
+
+    // 设置项点击事件
+    const settingsItems = document.querySelectorAll('.settings-item');
+    settingsItems.forEach(item => {
+        item.addEventListener('click', () => {
+            handleSettingsItemClick(item);
+        });
+    });
+}
+
+// 显示图片选择面板
+function showImagePickerSheet() {
+    const actionSheet = document.createElement('div');
+    actionSheet.className = 'action-sheet';
+    actionSheet.innerHTML = `
+        <div class="action-sheet-content">
+            <div class="action-sheet-header">
+                <h3>更换头像</h3>
+            </div>
+            <div class="action-sheet-options">
+                <button class="action-sheet-option">
+                    <i class="sf-symbol">camera.fill</i>
+                    <span>拍摄照片</span>
+                </button>
+                <button class="action-sheet-option">
+                    <i class="sf-symbol">photo.fill</i>
+                    <span>从相册选择</span>
+                </button>
+            </div>
+            <button class="action-sheet-cancel">取消</button>
+        </div>
+    `;
+
+    document.body.appendChild(actionSheet);
+
+    // 添加动画效果
+    requestAnimationFrame(() => {
+        actionSheet.classList.add('active');
+    });
+
+    // 选项点击事件
+    const options = actionSheet.querySelectorAll('.action-sheet-option');
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            // 模拟图片选择
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.click();
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const userAvatar = document.querySelector('.user-avatar-large img');
+                        if (userAvatar) {
+                            userAvatar.src = event.target.result;
+                        }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            closeActionSheet(actionSheet);
+        });
+    });
+
+    // 取消按钮点击事件
+    const cancelButton = actionSheet.querySelector('.action-sheet-cancel');
+    cancelButton.addEventListener('click', () => {
+        closeActionSheet(actionSheet);
+    });
+}
+
+// 关闭操作面板
+function closeActionSheet(sheet) {
+    sheet.classList.remove('active');
+    setTimeout(() => {
+        document.body.removeChild(sheet);
+    }, 300);
+}
+
+// 显示任务历史详情
+function showTaskHistoryModal() {
+    const modal = document.createElement('div');
+    modal.className = 'ios-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-button">
+                    <i class="sf-symbol">xmark</i>
+                </button>
+                <h3>任务历史</h3>
+                <div class="placeholder-button"></div>
+            </div>
+            <div class="modal-body">
+                <div class="task-timeline">
+                    <!-- 复制现有的时间线结构 -->
+                    <div class="timeline-group">
+                        <div class="timeline-date">今天</div>
+                        <div class="timeline-items">
+                            <div class="task-history-item" data-task-id="1">
+                                <div class="task-icon completed">
+                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                </div>
+                                <div class="task-info">
+                                    <h4>拍摄一张花朵照片</h4>
+                                    <p>完成于 14:30</p>
+                                </div>
+                                <i class="sf-symbol chevron">chevron.right</i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-group">
+                        <div class="timeline-date">本周</div>
+                        <div class="timeline-items">
+                            <div class="task-history-item" data-task-id="2">
+                                <div class="task-icon completed">
+                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                </div>
+                                <div class="task-info">
+                                    <h4>尝试一种新的食物</h4>
+                                    <p>完成于 昨天 19:45</p>
+                                </div>
+                                <i class="sf-symbol chevron">chevron.right</i>
+                            </div>
+                            <div class="task-history-item" data-task-id="3">
+                                <div class="task-icon completed">
+                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                </div>
+                                <div class="task-info">
+                                    <h4>进行5分钟冥想</h4>
+                                    <p>完成于 昨天 09:15</p>
+                                </div>
+                                <i class="sf-symbol chevron">chevron.right</i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-group">
+                        <div class="timeline-date">更早</div>
+                        <div class="timeline-items">
+                            <div class="task-history-item" data-task-id="4">
+                                <div class="task-icon completed">
+                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                </div>
+                                <div class="task-info">
+                                    <h4>记录一段有趣的对话</h4>
+                                    <p>完成于 3月15日</p>
+                                </div>
+                                <i class="sf-symbol chevron">chevron.right</i>
+                            </div>
+                            <div class="task-history-item" data-task-id="5">
+                                <div class="task-icon completed">
+                                    <i class="sf-symbol">checkmark.circle.fill</i>
+                                </div>
+                                <div class="task-info">
+                                    <h4>晨跑30分钟</h4>
+                                    <p>完成于 3月14日</p>
+                                </div>
+                                <i class="sf-symbol chevron">chevron.right</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // 添加动画效果
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
+
+    // 为每个任务项添加点击事件
+    const taskItems = modal.querySelectorAll('.task-history-item');
+    taskItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const taskId = item.dataset.taskId;
+            const taskTitle = item.querySelector('.task-info h4').textContent;
+            showTaskDetailModal(taskTitle, taskId);
+        });
+    });
+
+    // 关闭按钮点击事件
+    const closeButton = modal.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            document.body.removeChild(modal);
+        }, 300);
+    });
+}
+
+// 显示任务详情
+function showTaskDetailModal(taskTitle, taskId) {
+    // 模拟获取任务详情数据
+    const taskDetails = getTaskDetails(taskId);
+    
+    const modal = document.createElement('div');
+    modal.className = 'ios-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-button">
+                    <i class="sf-symbol">xmark</i>
+                </button>
+                <h3>任务详情</h3>
+                <div class="placeholder-button"></div>
+            </div>
+            <div class="modal-body">
+                <div class="task-detail">
+                    <h4>${taskTitle}</h4>
+                    <div class="task-meta">
+                        <span class="completion-time">${taskDetails.completionTime}</span>
+                        <span class="task-duration">${taskDetails.duration}</span>
+                    </div>
+                    ${taskDetails.images ? `
+                        <div class="task-images">
+                            ${taskDetails.images.map(img => `
+                                <div class="gallery-image">
+                                    <img src="${img}" alt="任务完成照片">
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="task-thoughts">
+                        <p>${taskDetails.thoughts}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // 添加动画效果
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
+
+    // 关闭按钮点击事件
+    const closeButton = modal.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            document.body.removeChild(modal);
+        }, 300);
+    });
+}
+
+// 模拟获取任务详情数据
+function getTaskDetails(taskId) {
+    // 模拟的任务详情数据
+    const taskDetailsMap = {
+        '1': {
+            completionTime: '今天 14:30',
+            duration: '用时15分钟',
+            images: [
+                'https://images.unsplash.com/photo-1457089328109-e5d9bd499191?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+            ],
+            thoughts: '今天在公园散步时拍摄了这些花朵，阳光透过花瓣的感觉真的很治愈。这个任务让我更加留意身边的美好事物。'
+        },
+        '2': {
+            completionTime: '昨天 19:45',
+            duration: '用时45分钟',
+            images: [
+                'https://images.unsplash.com/photo-1559314809-0d155014e29e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+            ],
+            thoughts: '第一次尝试泰国菜，Tom Yum汤的味道很特别，酸辣可口。这次体验让我对泰国美食产生了浓厚的兴趣。'
+        },
+        // 可以继续添加其他任务的详情数据
+    };
+    
+    return taskDetailsMap[taskId] || {
+        completionTime: '未知时间',
+        duration: '时长未记录',
+        thoughts: '暂无记录'
+    };
+}
+
+// 处理设置项点击
+function handleSettingsItemClick(item) {
+    const settingType = item.querySelector('span').textContent;
+    
+    switch (settingType) {
+        case '提醒设置':
+            showReminderSettings();
+            break;
+        case '我的收藏':
+            showFavorites();
+            break;
+        case '邀请好友':
+            showShareSheet();
+            break;
+        case '通用设置':
+            showGeneralSettings();
+            break;
+    }
+}
+
+// 显示提醒设置
+function showReminderSettings() {
+    const modal = document.createElement('div');
+    modal.className = 'ios-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-button">
+                    <i class="sf-symbol">xmark</i>
+                </button>
+                <h3>提醒设置</h3>
+                <div class="placeholder-button"></div>
+            </div>
+            <div class="modal-body">
+                <div class="settings-group">
+                    <div class="settings-row">
+                        <span>每日提醒</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-row">
+                        <span>提醒时间</span>
+                        <input type="time" value="09:00">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // 添加动画效果
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
+
+    // 关闭按钮点击事件
+    const closeButton = modal.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            document.body.removeChild(modal);
+        }, 300);
     });
 } 
