@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>每日任务 - iOS应用原型</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 引入iOS系统图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sf-symbols@1.0.0/dist/sf-symbols.min.css">
+</head>
+<body>
+    <div class="prototype-container">
+        <!-- 第一部分：基础框架展示 -->
+        <section class="prototype-section">
+            <h2 class="section-title">基础框架</h2>
+            
+            <div class="ios-device">
+                <div class="device-frame">
+                    <!-- 状态栏 -->
+                    <div class="status-bar">
+                        <div class="status-bar-time">9:41</div>
+                        <div class="status-bar-icons">
+                            <span class="signal-icon"></span>
+                            <span class="wifi-icon"></span>
+                            <span class="battery-icon">100%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 主内容区 -->
+                    <div class="app-content">
+                        <div class="content-placeholder">
+                            <h3>每日任务</h3>
+                            <p>基础框架展示</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部导航栏 -->
+                    <div class="tab-bar">
+                        <div class="tab-item active">
+                            <i class="sf-symbol">star.fill</i>
+                            <span>推荐</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="sf-symbol">globe</i>
+                            <span>广场</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="sf-symbol">person.fill</i>
+                            <span>我的</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部安全区域 -->
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第二部分：推荐页 -->
+        <section class="prototype-section">
+            <h2 class="section-title">推荐页</h2>
+            
+            <div class="ios-device">
+                <div class="device-frame">
+                    <!-- 状态栏 -->
+                    <div class="status-bar">
+                        <div class="status-bar-time">9:41</div>
+                        <div class="status-bar-icons">
+                            <span class="signal-icon"></span>
+                            <span class="wifi-icon"></span>
+                            <span class="battery-icon">100%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 主内容区 - 推荐页 -->
+                    <div class="app-content recommend-page">
+                        <div class="page-header">
+                            <h1 class="page-title">今日任务</h1>
+                        </div>
+                        
+                        <!-- 今日任务卡片 -->
+                        <div class="task-card">
+                            <div class="task-header">
+                                <h2 class="task-title">拍摄一张花朵照片</h2>
+                                <button class="refresh-button">
+                                    <i class="sf-symbol">arrow.clockwise</i>
+                                    <span class="refresh-count">2</span>
+                                </button>
+                            </div>
+                            
+                            <p class="task-description">
+                                在你的周围寻找一朵美丽的花，拍下它的照片。可以是野花、家养花卉或者公园里的花朵。尝试捕捉它最美的一面。
+                            </p>
+                            
+                            <div class="task-meta">
+                                <div class="task-difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                    <span class="difficulty-label">中等难度</span>
+                                </div>
+                                <div class="task-time">预计用时: 10分钟</div>
+                            </div>
+                            
+                            <button class="complete-button">
+                                完成任务
+                            </button>
+                        </div>
+                        
+                        <!-- 历史任务提示 -->
+                        <div class="history-hint">
+                            <div class="hint-icon">
+                                <i class="sf-symbol">clock</i>
+                            </div>
+                            <div class="hint-text">
+                                <h3>查看历史任务</h3>
+                                <p>你已经连续完成了7天的任务</p>
+                            </div>
+                            <div class="hint-arrow">
+                                <i class="sf-symbol">chevron.right</i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 任务完成弹窗 (默认隐藏) -->
+                    <div class="task-completion-modal" style="display: none;">
+                        <div class="modal-backdrop"></div>
+                        <div class="modal-container">
+                            <div class="modal-header">
+                                <h2 class="modal-title">完成任务</h2>
+                                <button class="close-button">
+                                    <i class="sf-symbol">xmark</i>
+                                </button>
+                            </div>
+                            
+                            <div class="modal-content">
+                                <div class="upload-section">
+                                    <h3 class="section-subtitle">上传照片</h3>
+                                    
+                                    <!-- 9宫格图片上传区 -->
+                                    <div class="image-grid">
+                                        <div class="image-upload-cell">
+                                            <div class="upload-placeholder">
+                                                <i class="sf-symbol">plus</i>
+                                            </div>
+                                        </div>
+                                        <div class="image-upload-cell"></div>
+                                        <div class="image-upload-cell"></div>
+                                        <div class="image-upload-cell"></div>
+                                        <div class="image-upload-cell"></div>
+                                        <div class="image-upload-cell"></div>
+                                        <div class="image-upload-cell"></div>
+                                        <div class="image-upload-cell"></div>
+                                        <div class="image-upload-cell"></div>
+                                    </div>
+                                    
+                                    <!-- 感想输入框 -->
+                                    <div class="thought-input-container">
+                                        <h3 class="section-subtitle">分享感想</h3>
+                                        <textarea class="thought-input" placeholder="写下你对这个任务的感想..."></textarea>
+                                    </div>
+                                    
+                                    <!-- 提交按钮 -->
+                                    <button class="submit-button">
+                                        提交
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部导航栏 -->
+                    <div class="tab-bar">
+                        <div class="tab-item active">
+                            <i class="sf-symbol">star.fill</i>
+                            <span>推荐</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="sf-symbol">globe</i>
+                            <span>广场</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="sf-symbol">person.fill</i>
+                            <span>我的</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部安全区域 -->
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第三部分：广场页（世界Tab） -->
+        <section class="prototype-section">
+            <h2 class="section-title">广场页（世界Tab）</h2>
+            
+            <div class="ios-device">
+                <div class="device-frame">
+                    <!-- 状态栏 -->
+                    <div class="status-bar">
+                        <div class="status-bar-time">9:41</div>
+                        <div class="status-bar-icons">
+                            <span class="signal-icon"></span>
+                            <span class="wifi-icon"></span>
+                            <span class="battery-icon">100%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 主内容区 - 广场页 -->
+                    <div class="app-content square-page">
+                        <!-- 顶部双Tab切换 -->
+                        <div class="page-tabs">
+                            <div class="tab-button active">
+                                <span>世界</span>
+                            </div>
+                            <div class="tab-button">
+                                <span>发现</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 世界Tab内容 -->
+                        <div class="tab-content world-tab">
+                            <!-- 推荐事项提交表单 -->
+                            <div class="suggestion-form">
+                                <div class="form-header">
+                                    <h3>推荐一个任务</h3>
+                                    <p>分享你的创意，让更多人参与</p>
+                                </div>
+                                
+                                <div class="form-input-group">
+                                    <input type="text" class="form-input" placeholder="输入任务标题...">
+                                    <button class="submit-suggestion">
+                                        <i class="sf-symbol">paperplane.fill</i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- 时间周期切换栏 -->
+                            <div class="time-filter">
+                                <div class="filter-option active">
+                                    <span>日榜</span>
+                                </div>
+                                <div class="filter-option">
+                                    <span>周榜</span>
+                                </div>
+                                <div class="filter-option">
+                                    <span>月榜</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 排行榜滑动容器 -->
+                            <div class="ranking-scroll-container">
+                                <!-- 排行榜卡片1 -->
+                                <div class="ranking-card">
+                                    <div class="ranking-number">1</div>
+                                    <div class="ranking-content">
+                                        <h3 class="ranking-title">尝试一种新的食物</h3>
+                                        <p class="ranking-description">今天尝试一种你从未吃过的食物或饮料。可以是不同文化的美食，或者是你一直想尝试但没有机会的东西。</p>
+                                        
+                                        <div class="ranking-meta">
+                                            <div class="vote-count">
+                                                <i class="sf-symbol">hand.thumbsup.fill</i>
+                                                <span>2,458</span>
+                                            </div>
+                                            <div class="completion-count">
+                                                <i class="sf-symbol">person.2.fill</i>
+                                                <span>1,024人已完成</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="vote-button-container">
+                                        <button class="vote-button">
+                                            <i class="sf-symbol">hand.thumbsup</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 排行榜卡片2 -->
+                                <div class="ranking-card">
+                                    <div class="ranking-number">2</div>
+                                    <div class="ranking-content">
+                                        <h3 class="ranking-title">进行5分钟冥想</h3>
+                                        <p class="ranking-description">找一个安静的地方，花5分钟时间进行简单的冥想。专注于你的呼吸，让思绪平静下来。</p>
+                                        
+                                        <div class="ranking-meta">
+                                            <div class="vote-count">
+                                                <i class="sf-symbol">hand.thumbsup.fill</i>
+                                                <span>1,879</span>
+                                            </div>
+                                            <div class="completion-count">
+                                                <i class="sf-symbol">person.2.fill</i>
+                                                <span>956人已完成</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="vote-button-container">
+                                        <button class="vote-button voted">
+                                            <i class="sf-symbol">hand.thumbsup.fill</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 排行榜卡片3 -->
+                                <div class="ranking-card">
+                                    <div class="ranking-number">3</div>
+                                    <div class="ranking-content">
+                                        <h3 class="ranking-title">拍摄一张花朵照片</h3>
+                                        <p class="ranking-description">在你的周围寻找一朵美丽的花，拍下它的照片。可以是野花、家养花卉或者公园里的花朵。</p>
+                                        
+                                        <div class="ranking-meta">
+                                            <div class="vote-count">
+                                                <i class="sf-symbol">hand.thumbsup.fill</i>
+                                                <span>1,546</span>
+                                            </div>
+                                            <div class="completion-count">
+                                                <i class="sf-symbol">person.2.fill</i>
+                                                <span>832人已完成</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="vote-button-container">
+                                        <button class="vote-button">
+                                            <i class="sf-symbol">hand.thumbsup</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 添加备选库按钮 -->
+                            <div class="add-to-library-container">
+                                <button class="add-to-library-button">
+                                    <i class="sf-symbol">plus.circle.fill</i>
+                                    <span>添加到我的备选库</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部导航栏 -->
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <i class="sf-symbol">star</i>
+                            <span>推荐</span>
+                        </div>
+                        <div class="tab-item active">
+                            <i class="sf-symbol">globe.fill</i>
+                            <span>广场</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="sf-symbol">person</i>
+                            <span>我的</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部安全区域 -->
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第四部分：广场页（发现Tab） -->
+        <section class="prototype-section">
+            <h2 class="section-title">广场页（发现Tab）</h2>
+            
+            <div class="ios-device">
+                <div class="device-frame">
+                    <!-- 状态栏 -->
+                    <div class="status-bar">
+                        <div class="status-bar-time">9:41</div>
+                        <div class="status-bar-icons">
+                            <span class="signal-icon"></span>
+                            <span class="wifi-icon"></span>
+                            <span class="battery-icon">100%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 主内容区 - 广场页（发现Tab） -->
+                    <div class="app-content square-page">
+                        <!-- 顶部双Tab切换 -->
+                        <div class="page-tabs">
+                            <div class="tab-button">
+                                <span>世界</span>
+                            </div>
+                            <div class="tab-button active">
+                                <span>发现</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 发现Tab内容 -->
+                        <div class="tab-content discover-tab">
+                            <!-- 动态筛选组件 -->
+                            <div class="feed-filter">
+                                <div class="filter-option active">
+                                    <span>最新</span>
+                                </div>
+                                <div class="filter-option">
+                                    <span>最热</span>
+                                </div>
+                                <div class="filter-option">
+                                    <span>密友</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 用户动态瀑布流 -->
+                            <div class="feed-container">
+                                <!-- 动态卡片1 -->
+                                <div class="feed-card">
+                                    <div class="feed-header">
+                                        <div class="user-avatar">
+                                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="用户头像">
+                                        </div>
+                                        <div class="user-info">
+                                            <h3 class="user-name">林小雨</h3>
+                                            <p class="post-time">10分钟前</p>
+                                        </div>
+                                        <button class="follow-button">
+                                            <i class="sf-symbol">person.badge.plus</i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="feed-content">
+                                        <div class="task-tag">
+                                            <i class="sf-symbol">checkmark.circle.fill</i>
+                                            <span>拍摄一张花朵照片</span>
+                                        </div>
+                                        
+                                        <p class="feed-text">
+                                            今天在公园散步时发现了这些美丽的花朵，阳光透过花瓣的感觉真的很治愈，分享给大家～
+                                        </p>
+                                        
+                                        <!-- 图片画廊 -->
+                                        <div class="feed-gallery">
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1457089328109-e5d9bd499191?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1474112704314-8162b7749a90?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="花朵照片">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="feed-actions">
+                                            <button class="action-button">
+                                                <i class="sf-symbol">heart</i>
+                                                <span>128</span>
+                                            </button>
+                                            <button class="action-button">
+                                                <i class="sf-symbol">bubble.right</i>
+                                                <span>36</span>
+                                            </button>
+                                            <button class="action-button">
+                                                <i class="sf-symbol">square.and.arrow.up</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 评论输入框 -->
+                                    <div class="comment-input-container">
+                                        <input type="text" class="comment-input" placeholder="添加评论...">
+                                        <button class="send-comment">
+                                            <i class="sf-symbol">arrow.up.circle.fill</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 动态卡片2 -->
+                                <div class="feed-card">
+                                    <div class="feed-header">
+                                        <div class="user-avatar">
+                                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="用户头像">
+                                        </div>
+                                        <div class="user-info">
+                                            <h3 class="user-name">陈小明 <span class="close-friend-badge">密友</span></h3>
+                                            <p class="post-time">2小时前</p>
+                                        </div>
+                                        <button class="follow-button following">
+                                            <i class="sf-symbol">person.badge.check.fill</i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="feed-content">
+                                        <div class="task-tag">
+                                            <i class="sf-symbol">checkmark.circle.fill</i>
+                                            <span>尝试一种新的食物</span>
+                                        </div>
+                                        
+                                        <p class="feed-text">
+                                            今天尝试了泰国菜，酸辣的口味真的很特别！Tom Yum汤的味道太赞了，强烈推荐大家也去尝试一下～
+                                        </p>
+                                        
+                                        <!-- 图片画廊 -->
+                                        <div class="feed-gallery single-image">
+                                            <div class="gallery-image">
+                                                <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="泰国菜照片">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="feed-actions">
+                                            <button class="action-button active">
+                                                <i class="sf-symbol">heart.fill</i>
+                                                <span>256</span>
+                                            </button>
+                                            <button class="action-button">
+                                                <i class="sf-symbol">bubble.right</i>
+                                                <span>42</span>
+                                            </button>
+                                            <button class="action-button">
+                                                <i class="sf-symbol">square.and.arrow.up</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 评论区 -->
+                                    <div class="comments-section">
+                                        <div class="comment">
+                                            <div class="comment-avatar">
+                                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="评论者头像">
+                                            </div>
+                                            <div class="comment-content">
+                                                <h4 class="comment-name">王小花</h4>
+                                                <p class="comment-text">看起来好好吃！是在哪家店啊？</p>
+                                            </div>
+                                        </div>
+                                        <div class="comment">
+                                            <div class="comment-avatar">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="评论者头像">
+                                            </div>
+                                            <div class="comment-content">
+                                                <h4 class="comment-name">陈小明</h4>
+                                                <p class="comment-text">在城西的泰香阁，价格也很实惠～</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 评论输入框 -->
+                                    <div class="comment-input-container">
+                                        <input type="text" class="comment-input" placeholder="添加评论...">
+                                        <button class="send-comment">
+                                            <i class="sf-symbol">arrow.up.circle.fill</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部导航栏 -->
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <i class="sf-symbol">star</i>
+                            <span>推荐</span>
+                        </div>
+                        <div class="tab-item active">
+                            <i class="sf-symbol">globe.fill</i>
+                            <span>广场</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="sf-symbol">person</i>
+                            <span>我的</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部安全区域 -->
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 后续部分将在确认后添加 -->
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
